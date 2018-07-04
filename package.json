@@ -1,0 +1,23 @@
+{
+  "name": "passport_test",
+  "version": "1.0.0",
+  "description": "Testing ground for passport js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rokuto/passport_test.git"
+  },
+  "author": "Rokuto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rokuto/passport_test/issues"
+  },
+  "homepage": "https://github.com/Rokuto/passport_test#readme",
+  "dependencies": {
+    "passport": "^0.4.0"
+  }
+}

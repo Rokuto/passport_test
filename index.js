@@ -1,58 +1,71 @@
-const fs = require('fs');
+const express = require('express');
+const path = require('path');
+const app = express();
+const port = '3000';
 
-/* Synchronous way of reading a file
-let content;
-try {
-	content = fs.readFileSync('README.md', 'utf-8');
-} catch (err) {
-	console.log(err);
-}
 
-console.log(content);
-*/
+/* Middlewares
+app.use((request, response, next) => {
+	console.log(request.headers);
+	next();
+});
 
-/* Error-first callback way of reading a file
-fs.readFile('README.md', 'utf-8', function (error, content) {
-	if (error) {
-		return console.log(error);
-	}
+app.use((request, response, next) => {
+	request.chance = Math.random();
+});
 
-	console.log(content);
+app.get('/', (request, response) => {
+	// response.send('Hello');
+	response.json({
+		chance: request.chance
+	});
 });
 */
 
-/* Something went wrong
-console.log('Reading File . . .');
-fs.readFile('README.md', 'utf-8', (err, content) => {
+/* Error handling
+app.get('/', () => {
+	throw new Error('oops');
+});
+
+app.use((error, request, response, next) => {
+	console.log(error);
+	response.status(500).send('Something broke!');
+});
+
+app.listen(port, (err) => {
 	if (err) return console.log(err);
-
-	console.log(content);
+	console.log(`Server Listening at port ${ port }`);
 });
-console.log('Done Reading File.');
 */
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-function stats (file) {
-	return new Promise ( (resolve, reject) => {
-		fs.readFile(file, (err, data) => {
-			if (err) reject(err);
-			resolve(data);
-		});
-	} ); 
+app.get('/', (request, response) => {
+	response.render('home', {
+		name: 'Joe'
+	})
+});
+
+app.listen(port, (err) => {
+	if (err) return console.log(err);
+	console.log(`Server Listening at port ${ port }`);
+});
+
+/* Create a server using http
+const http = require('http');
+const port = '3000';
+
+const requestHandler = (request, response) => {
+	console.log(request.url);
+	response.end('Node JS Server.');
 }
 
-async function asyncCall () {
-	console.log('Reading File . . .');
-	
-	console.log(`The file is: \n${ await stats('README.md') }`);
-	console.log(`The file is: \n${ await stats('index.js') }`);
-	// console.log(`The file is: \n${ await Promise.all( [stats('README.md'), stats('index.js')] ) }`);
-	
-	console.log('Done Reading File.');
-}
+const server = http.createServer(requestHandler);
 
-asyncCall();
+server.listen(port, (error) => {
+	if (error) return console.log(error);
 
-// Filter Array and get all the nnumbers that are bigger than 2
-// console.log([2,4,1,5,3].filter( num => num > 2 ));
-
+	console.log(`Server Listening at port ${ port }`);
+});
+*/
